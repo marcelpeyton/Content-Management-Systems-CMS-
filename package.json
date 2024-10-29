@@ -1,0 +1,22 @@
+{
+  "name": "employee_management",
+  "version": "1.0.0",
+  "description": "A command-line application for managing employees, roles, and departments.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.20",
+    "express": "^4.17.1",
+    "pg": "^8.11.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
