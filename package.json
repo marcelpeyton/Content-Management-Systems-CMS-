@@ -9,14 +9,17 @@
     "build": "tsc"
   },
   "dependencies": {
-    "inquirer": "^9.2.20",
     "express": "^4.17.1",
+    "inquirer": "^9.2.20",
     "pg": "^8.11.3"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/inquirer": "^9.0.7",
+    "@types/pg": "^8.11.6",
     "typescript": "^5.2.2"
   }
 }
