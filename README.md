@@ -1,6 +1,6 @@
 # Content-Management-Systems-CMS- <img align="right" src="https://img.shields.io/badge/License-MIT-blue"></img>
 ## Description
-Create a database for employees, departments, and their managers.
+Create a database for employees, departments, and their managers. Using iqurier, this is all done in a command-line interface.
 
 ## Table of Contents
 
