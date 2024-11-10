@@ -1,10 +1,6 @@
 import inquirer from 'inquirer';
-import { QueryResult } from 'pg';
 import { pool, connectToDb } from './connections.js';
-
-
 await connectToDb();
-
 // Create tables
 async function createTables() {
     pool.query(`
@@ -31,8 +27,7 @@ async function createTables() {
         );
     `);
 }
-
-async function seeds(){
+async function seeds() {
     pool.query(`
         INSERT INTO departments (name) VALUES ('Engineering');
         INSERT INTO departments (name) VALUES ('Human Resources');
@@ -73,58 +68,51 @@ async function seeds(){
 }
 // Functions to display data
 function viewDepartments() {
-    pool.query(
-        `SELECT * FROM departments`,
-        (err: Error, result: QueryResult) => {
+    pool.query(`SELECT * FROM departments`, (err, result) => {
         if (err) {
             console.log(`${err}`);
-        } else{
-            let post = (result.rows.length > 0) ? result.rows : null;
-            console.table(post)
         }
-        });
+        else {
+            let post = (result.rows.length > 0) ? result.rows : null;
+            console.table(post);
+        }
+    });
 }
-
 function viewRoles() {
-    pool.query(
-        `SELECT roles.id, title, salary, departments.name 
+    pool.query(`SELECT roles.id, title, salary, departments.name 
         FROM roles 
-        JOIN departments ON roles.department_id = departments.id;`,
-        (err: Error, result: QueryResult) => {
+        JOIN departments ON roles.department_id = departments.id;`, (err, result) => {
         if (err) {
             console.log(err);
-        }else{
-            let post = (result.rows.length > 0) ? result.rows : null;
-            console.table(post)
         }
-        });
+        else {
+            let post = (result.rows.length > 0) ? result.rows : null;
+            console.table(post);
+        }
+    });
 }
-
 function viewEmployees() {
-    pool.query(
-        `SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.name AS department, roles.salary, 
+    pool.query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.name AS department, roles.salary, 
         managers.first_name || ' ' || managers.last_name AS manager
         FROM employees 
         LEFT JOIN roles ON employees.role_id = roles.id 
         LEFT JOIN departments ON roles.department_id = departments.id 
-        LEFT JOIN employees AS managers ON employees.manager_id = managers.id;`,
-        (err: Error, result: QueryResult) => {
+        LEFT JOIN employees AS managers ON employees.manager_id = managers.id;`, (err, result) => {
         if (err) {
             console.log(`${err}`);
-        }else{
-            let post = (result.rows.length > 0) ? result.rows : null;
-            console.table(post)
         }
-        });
+        else {
+            let post = (result.rows.length > 0) ? result.rows : null;
+            console.table(post);
+        }
+    });
 }
-
 // Functions to add data
 async function addDepartment() {
     const { name } = await inquirer.prompt([{ type: 'input', name: 'name', message: 'Enter the name of the department:' }]);
     pool.query("INSERT INTO departments (name) VALUES ($1)", [name]);
     console.log("Department added.");
 }
-
 async function addRole() {
     const { title, salary, department_id } = await inquirer.prompt([
         { type: 'input', name: 'title', message: 'Enter the role title:' },
@@ -134,7 +122,6 @@ async function addRole() {
     await pool.query("INSERT INTO roles (title, salary, department_id) VALUES ($1, $2, $3)", [title, salary, department_id]);
     console.log("Role added.");
 }
-
 async function addEmployee() {
     const { first_name, last_name, role_id, manager_id } = await inquirer.prompt([
         { type: 'input', name: 'first_name', message: "Enter the employee's first name:" },
@@ -145,7 +132,6 @@ async function addEmployee() {
     await pool.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)", [first_name, last_name, role_id, manager_id ? manager_id : null]);
     console.log("Employee added.");
 }
-
 async function updateEmployeeRole() {
     const { employee_id, new_role_id } = await inquirer.prompt([
         { type: 'input', name: 'employee_id', message: 'Enter the employee ID to update:' },
@@ -154,8 +140,7 @@ async function updateEmployeeRole() {
     await pool.query("UPDATE employees SET role_id = $1 WHERE id = $2", [new_role_id, employee_id]);
     console.log("Employee role updated.");
 }
-
-async function init(){
+async function init() {
     await createTables();
     inquirer.prompt([
         {
@@ -165,7 +150,7 @@ async function init(){
             choices: ['Yes', 'No'],
         },
     ])
-    .then(async answers =>  {
+        .then(async (answers) => {
         switch (answers.choice) {
             case 'Yes':
                 await seeds();
@@ -178,11 +163,9 @@ async function init(){
                 break;
         }
     });
-    
 }
-
-function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 // Main application loop
 function main() {
@@ -192,35 +175,41 @@ function main() {
             type: 'list',
             name: 'choice',
             message: 'What would you like to do?',
-            choices: ['View all departments', 'View all roles','View all employees','Add a department','Add a role','Add an employee','Update an employee role','Exit'],
+            choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee role', 'Exit'],
         },
-    ]).then(async answers =>  {
+    ]).then(async (answers) => {
         if (answers.choice === 'View all departments') {
             viewDepartments();
-        } else if (answers.choice === 'View all roles') {
+        }
+        else if (answers.choice === 'View all roles') {
             viewRoles();
-        } else if (answers.choice === 'View all employees') {
+        }
+        else if (answers.choice === 'View all employees') {
             viewEmployees();
-        } else if (answers.choice === 'Add a department') {
+        }
+        else if (answers.choice === 'Add a department') {
             await addDepartment();
-        } else if (answers.choice === 'Add a role') {
+        }
+        else if (answers.choice === 'Add a role') {
             await addRole();
-        } else if (answers.choice === 'Add an employee') {
+        }
+        else if (answers.choice === 'Add an employee') {
             await addEmployee();
-        } else if (answers.choice === 'Update an employee role') {
+        }
+        else if (answers.choice === 'Update an employee role') {
             await updateEmployeeRole();
-        } else if (answers.choice === 'Exit') {
+        }
+        else if (answers.choice === 'Exit') {
             console.log("Goodbye!");
             keepGoing = false;
-        } else {
+        }
+        else {
             console.log("Invalid option, please try again.");
         }
         if (keepGoing) {
             await delay(10);
             main();
-        }        
-    });  
+        }
+    });
 }
-
 init();
-
