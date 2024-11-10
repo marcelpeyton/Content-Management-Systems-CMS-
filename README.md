@@ -1,6 +1,6 @@
 # Content-Management-Systems-CMS- <img align="right" src="https://img.shields.io/badge/License-MIT-blue"></img>
 ## Description
-Using the https://openweathermap.org/ API, you can get the 5 day forecast of any city. 
+Create a database for employees, departments, and their managers.
 
 ## Table of Contents
 
