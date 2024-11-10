@@ -32,4 +32,4 @@ To use:
 Distributed under the MIT. See https://opensource.org/license/mit for more information
 
 ## Video
-TBA
+https://www.youtube.com/watch?v=j9WDHmLmohM&feature=youtu.be
